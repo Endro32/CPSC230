@@ -4,6 +4,7 @@ Starting Up
 */
 
 #include <iostream>
+#include <string>
 
 using std::cin;
 using std::cout;
@@ -13,24 +14,37 @@ char toLowerCase(char c);
 
 int main()
 {
+
+	//cout << (int) 'a';
+	//cout << (int) 'e';
+
 	//vars
 	string lastName;
+	char initial;
 	double balance;
 
 	//input
-	cout << ""
+	cout << "Enter your last name:\n";
+	cin >> lastName;
+	cout << "Enter your current balance:\n";
+	cin >> balance;
 
 
 	//do stuff
-	string x = "XHello";
-
-	char y = x[0];
-	cout << toLowerCase(y);
+	if (balance == 0)
+	{
+		cout << "Hall 18";
+	}
+	else
+	{
+		initial = toLowerCase(lastName[0]);
+		if (initial >= 97 && initial <= 101)
+		{
+			cout << "Hall 3";
+		}
+	}
 
 	//output
-
-	//cout << (int) 'A';
-	//cout << (int) 'Z';
 
 	return 0;
 }
