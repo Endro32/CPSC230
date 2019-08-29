@@ -10,11 +10,12 @@ using namespace std;
 int main1()
 {
 	int casesSoldDaily;
+	double profitPerBottle = .2;
 
 	cout << "How many cases do you sell daily?\n";
 	cin >> casesSoldDaily;
 
-	double dailyProfit = casesSoldDaily * 2.4;
+	double dailyProfit = casesSoldDaily * profitPerBottle * 12;
 	double annualProfit = dailyProfit * 365;
 
 	cout << "You will earn $";
