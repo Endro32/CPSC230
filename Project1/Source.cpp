@@ -12,7 +12,7 @@ using std::string;
 
 char toLowerCase(char c);
 
-int main2()
+int main()
 {
 	//vars
 	string lastName;
