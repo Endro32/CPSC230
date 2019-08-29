@@ -22,7 +22,7 @@ int main()
 
 	cout << "You will sell ";
 	cout << bottlesSoldDaily;
-	cout << " and earn $";
+	cout << " bottles and earn $";
 	cout << dailyProfit;
 	cout << " in one day.\nYou will earn $";
 	cout << annualProfit;
