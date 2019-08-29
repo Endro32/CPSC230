@@ -1,6 +1,6 @@
 /*
 Stefan Carlson
-Soft Drink Profit Program
+Soft Drink Profit Program v2
 */
 
 #include <iostream>
@@ -29,6 +29,6 @@ int main()
 	cout << " in one year.\nYou will earn $";
 	cout << tenYearProfit;
 	cout << " in ten years.";
-	
+
 	return 0;
 }
