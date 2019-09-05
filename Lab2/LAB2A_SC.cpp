@@ -28,7 +28,7 @@
 
 using namespace std;
 
-int main()
+int main1()
 {
     // Variables
 	double v, t, a;
@@ -55,7 +55,7 @@ int main()
 	cout << "\nTo reach a velocity of " <<
 		v << " miles per hour in " << t << " seconds,\n" <<
 		"you must have an acceleration of " <<
-		a << " meters per second.\n";
+		a << " meters per second squared.\n";
 
 	return 0;
 }
