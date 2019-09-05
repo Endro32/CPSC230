@@ -6,20 +6,21 @@
 //
 //***********************************************************************************
 
-/* Algorithm
-1. Define variables (type double) vel, time, and accel
-2. Define variable (type int) tempAccel
+// Algorithm
+/*
+1. Define variables (type double) v, t, and a
+2. Define variable (type int) tempA
 3. Define constant double MPH2MPS as 1609/3600
 4. Display program name
-5. Ask user for velocity, store to vel
-6. Ask user for time, store to time
-7. Calculate accel by dividing vel by time and multiplying the result by MPH2MPS
-8. Multiply accel by 10
-9. Add 0.5 to accel
-10. Convert accel to 10 (will truncate decimal) and store to tempAccel
-11. Convert tempAccel back to double and store to accel
+5. Ask user for velocity, store to v
+6. Ask user for time, store to t
+7. Calculate a by dividing v by t and multiplying the result by MPH2MPS
+8. Multiply a by 10
+9. Add 0.5 to a
+10. Convert a to 10 (will truncate decimal) and store to tempA
+11. Convert tempA back to double and store to a
 12. Set cout precision to 2
-13. Print accel to screen as final output
+13. Print a to screen as final output
 */
 
 #include <iostream>
@@ -30,31 +31,31 @@ using namespace std;
 int main()
 {
     // Variables
-	double vel, time, accel;
-	int tempAccel;
+	double v, t, a;
+	int tempA;
 	const double MPH2MPS = 1609.0 / 3600.0;
 
 	// Input
 	cout << "~~ Acceleration Calculator! ~~\n\n" <<
 		"Enter the final velocity in mph: ";
-	cin >> vel;
+	cin >> v;
 	cout << "Enter the time in seconds: ";
-	cin >> time;
+	cin >> t;
 
 	// Computation
-	accel = MPH2MPS * (vel / time);
-	accel *= 10;
-	accel += 0.5;
-	tempAccel = (int) accel;
-	accel = static_cast<double> (tempAccel);
-	accel /= 10;
+	a = MPH2MPS * (v / t);
+	a *= 10;
+	a += 0.5;
+	tempA = (int) a;
+	a = static_cast<double> (tempA);
+	a /= 10;
 
 	// Output
 	cout << setprecision(2) << fixed;
 	cout << "\nTo reach a velocity of " <<
-		vel << " miles per hour in " << time << " seconds,\n" <<
+		v << " miles per hour in " << t << " seconds,\n" <<
 		"you must have an acceleration of " <<
-		accel << " meters per second.\n";
+		a << " meters per second.\n";
 
 	return 0;
 }
