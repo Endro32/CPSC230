@@ -49,7 +49,24 @@ int main()
 		}
 		else
 		{
-			cout << "\nThere is no winner!";
+			cout << "\nThere is no winner!\n";
+
+			// Part C
+			if (yourLetter == 'F')
+			{
+				cout << "Have you considered another major?";
+			}
+			else if (yourLetter == 'D')
+			{
+				cout << "Both should improve to avoid seeing me again next semester!";
+			}
+			else if (yourLetter == 'C')
+			{
+				cout << "Not bad but could be better";
+			}
+			else { // Will occur if the letter is an A or B
+				cout << "Both did very good, congratulations!";
+			}
 		}
 
 		// Ask if user wants to compare with another student
