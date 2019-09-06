@@ -1,11 +1,13 @@
 //******************************************************************************
-// CPSC 230 TR/ MW		Semester Year		Lab # 2B
+// CPSC 230 TR				2019			Lab # 2B
 // Stefan Carlson
 // Takes two grade inputs in percentages, converts them both to letter grades,
 // then compares the two to see who got the higher score
 //******************************************************************************
 
 #include <iostream>
+#include <string>
+#include <cctype>
 
 using namespace std;
 
@@ -14,36 +16,52 @@ char toLetter(int percent);
 int main()
 {
 	// Variables
-	char yourLetter, theirLetter;
+	char yourLetter, theirLetter, repeat;
 	int yourGrade, theirGrade;
 
 	// Input
 	cout << "Enter your grade as a percentage from 0-100: ";
 	cin >> yourGrade;
-	cout << "Enter your friend's grade as a percentage from 0-100: ";
-	cin >> theirGrade;
 
-	// Computation
-	yourLetter = toLetter(yourGrade);
-	theirLetter = toLetter(theirGrade);
+	// This is where the loop will begin
+	while (true)
+	{
+		cout << "Enter your friend's grade as a percentage from 0-100: ";
+		cin >> theirGrade;
 
-	// Output
-	if (yourLetter == 'E' || theirLetter == 'E')
-	{
-		cout << "\nInvalid input data, cannot determine who did better in the test!";
-		return 1;
-	}
-	else if (yourLetter < theirLetter)
-	{
-		cout << "\nYou did better in the test, you need to help your partner";
-	}
-	else if (yourLetter > theirLetter)
-	{
-		cout << "\nYour partner did better in the test, he needs to help you";
-	}
-	else
-	{
-		cout << "\nThere is no winner!";
+		// Computation
+		yourLetter = toLetter(yourGrade);
+		theirLetter = toLetter(theirGrade);
+
+		// Output
+		if (yourLetter == 'E' || theirLetter == 'E')
+		{
+			cout << "\nInvalid input data, cannot determine who did better in the test!";
+			return 1;
+		}
+		else if (yourLetter < theirLetter)
+		{
+			cout << "\nYou did better in the test, you need to help your partner";
+		}
+		else if (yourLetter > theirLetter)
+		{
+			cout << "\nYour partner did better in the test, he needs to help you";
+		}
+		else
+		{
+			cout << "\nThere is no winner!";
+		}
+
+		// Ask if user wants to compare with another student
+		cout << "\nWould you like to compare with another student? [Y/n]: ";
+		cin >> repeat;
+
+		// Unless user enters yes, exit the  program
+		if (tolower(repeat) != 'y')
+		{
+			break;
+		}
+
 	}
 
 	// Just a nice little spacer there at the end
