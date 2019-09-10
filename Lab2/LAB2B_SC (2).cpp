@@ -22,7 +22,6 @@
 	otherwise
 		Print on the screen "There is no winner!"
 */
-
 #include <iostream>
 #include <string>
 #include <cctype>
@@ -31,94 +30,61 @@ using namespace std;
 
 char toLetter(int percent);
 
-int main()
+int main2()
 {
 	// Variables
 	char yourLetter, theirLetter, repeat;
 	int yourGrade, theirGrade;
-	bool cont = true; // Short for continue, which is obviously an illegal name
 
 	// Input
 	cout << "Enter your grade as a percentage from 0-100: ";
 	cin >> yourGrade;
 
 	// Computation & Output
-	// Correct input is an int between 0 & 100
-	// Start by weeding out invalid input
-	if (yourGrade >= 0 && yourGrade <= 100) {
-		yourGrade /= 10;
+	yourLetter = toLetter(yourGrade);
+	cout << "Your letter grade is: " << yourLetter;
 
-		// Get a char based on percent grade
-		if (yourGrade >= 9) {
-			yourLetter = 'A';
-		}
-		else if (yourGrade == 8) {
-			yourLetter = 'B';
-		}
-		else if (yourGrade == 7) {
-			yourLetter = 'C';
-		}
-		else if (yourGrade == 6) {
-			yourLetter = 'D';
-		}
-		else {
-			yourLetter = 'F';
-		}
-	} else {
-		yourLetter = 'E';
-	}
-	cout << "Your letter grade is: " << yourLetter << endl;
-
-	// This is where the loop will begin (part B)
-	while (cont) {
+	// This is where the loop will begin
+	while (true)
+	{
 		cout << "Enter your friend's grade as a percentage from 0-100: ";
 		cin >> theirGrade;
 
-		// Same as for yourGrade
-		if (theirGrade >= 0 && theirGrade <= 100) {
-			theirGrade /= 10;
+		theirLetter = toLetter(theirGrade);
+		cout << "Their letter grade is: " << theirLetter;
 
-			// Get a char based on percent grade
-			if (theirGrade >= 9) {
-				theirLetter = 'A';
-			}
-			else if (theirGrade == 8) {
-				theirLetter = 'B';
-			}
-			else if (theirGrade == 7) {
-				theirLetter = 'C';
-			}
-			else if (theirGrade == 6) {
-				theirLetter = 'D';
-			}
-			else {
-				theirLetter = 'F';
-			}
-		} else {
-			yourLetter = 'E';
-		}
-		cout << "Their letter grade is: " << theirLetter << endl;
-
-		// Now that both grades have been converted to letters, we'll commpare them
-		if (yourLetter == 'E' || theirLetter == 'E') {
+		if (yourLetter == 'E' || theirLetter == 'E')
+		{
 			cout << "\nInvalid input data, cannot determine who did better in the test!";
 			return 1;
-		} else if (yourLetter < theirLetter) {
+		}
+		else if (yourLetter < theirLetter)
+		{
 			cout << "\nYou did better in the test, you need to help your partner";
-		} else if (yourLetter > theirLetter) {
+		}
+		else if (yourLetter > theirLetter)
+		{
 			cout << "\nYour partner did better in the test, he needs to help you";
-		} else {// Will occur if both letter grades are the same
+		}
+		else // Will occur if both letter grades are the same
+		{
 			cout << "\nThere is no winner!\n";
 
 			// Part C
-			if (yourLetter == 'F') {
-				// Linus Torvalds would be pissed that I'm 4 indents over
+			if (yourLetter == 'F')
+			{
 				cout << "Have you considered another major?";
-			} else if (yourLetter == 'D') {
+			}
+			else if (yourLetter == 'D')
+			{
 				cout << "Both should improve to avoid seeing me again next semester!";
-			} else if (yourLetter == 'C') {
+			}
+			else if (yourLetter == 'C')
+			{
 				cout << "Not bad but could be better";
-			} else { // Will occur if the letter is an A or B
+			}
+			else // Will occur if the letter is an A or B
+			{
 				cout << "Both did very good, congratulations!";
 			}
 		}
@@ -128,8 +94,9 @@ int main()
 		cin >> repeat;
 
 		// Unless user enters yes, exit the  program
-		if (tolower(repeat) != 'y') {
-			cont = false;
+		if (tolower(repeat) != 'y')
+		{
+			break;
 		}
 
 	}
@@ -137,4 +104,43 @@ int main()
 	// Just a nice little spacer there at the end
 	cout << endl;
 	return 0;
+}
+
+/*
+Takes a grade as a percent and returns a letter grade
+Returns E if percent is not between 0 and 100
+*/
+char toLetter(int percent)
+{
+	// Correct input is an int between 0 & 100
+	// Start by weeding out invalid input
+	if (percent >= 0 && percent <= 100)
+	{
+		percent /= 10;
+
+		// Return a char based on percent grade
+		if (percent >= 9)
+		{
+			return 'A';
+		}
+		else if (percent == 8)
+		{
+			return 'B';
+		}
+		else if (percent == 7)
+		{
+			return 'C';
+		}
+		else if (percent == 6)
+		{
+			return 'D';
+		}
+		else
+		{
+			return 'F';
+		}
+	} 
+
+	// Invalid user input
+	return 'E';
 }

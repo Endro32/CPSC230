@@ -154,6 +154,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="LAB2A_SC.cpp" />
+    <ClCompile Include="LAB2B_SC (2).cpp" />
     <ClCompile Include="LAB2B_SC.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
