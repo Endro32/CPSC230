@@ -47,7 +47,7 @@ int main()
 		{
 			cout << "\nYour partner did better in the test, he needs to help you";
 		}
-		else
+		else // Will occur if both letter grades are the same
 		{
 			cout << "\nThere is no winner!\n";
 
@@ -64,7 +64,8 @@ int main()
 			{
 				cout << "Not bad but could be better";
 			}
-			else { // Will occur if the letter is an A or B
+			else // Will occur if the letter is an A or B
+			{
 				cout << "Both did very good, congratulations!";
 			}
 		}
@@ -87,8 +88,8 @@ int main()
 }
 
 /*
-* Takes a grade as a percent and returns a letter grade
-* Returns E if percent is not between 0 and 100
+Takes a grade as a percent and returns a letter grade
+Returns E if percent is not between 0 and 100
 */
 char toLetter(int percent)
 {
