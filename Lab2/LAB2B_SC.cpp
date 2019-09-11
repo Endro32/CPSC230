@@ -5,6 +5,8 @@
 // then compares the two to see who got the higher score
 //******************************************************************************
 
+// Using Linux kernel coding style
+
 /* Algorithm:
 1. Declare variables yourletter, theirletter that hold a single character each.
 2. Declare variables yourgrade, theirgrade that hold whole numbers.
@@ -28,8 +30,6 @@
 #include <cctype>
 
 using namespace std;
-
-char toLetter(int percent);
 
 int main()
 {
@@ -64,7 +64,8 @@ int main()
 		else {
 			yourLetter = 'F';
 		}
-	} else {
+
+	} else { // Invalid input
 		yourLetter = 'E';
 	}
 	cout << "Your letter grade is: " << yourLetter << endl;
@@ -94,7 +95,8 @@ int main()
 			else {
 				theirLetter = 'F';
 			}
-		} else {
+
+		} else { // Invalid input
 			yourLetter = 'E';
 		}
 		cout << "Their letter grade is: " << theirLetter << endl;
@@ -107,7 +109,7 @@ int main()
 			cout << "\nYou did better in the test, you need to help your partner";
 		} else if (yourLetter > theirLetter) {
 			cout << "\nYour partner did better in the test, he needs to help you";
-		} else {// Will occur if both letter grades are the same
+		} else { // Will occur if both letter grades are the same
 			cout << "\nThere is no winner!\n";
 
 			// Part C

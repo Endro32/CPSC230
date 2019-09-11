@@ -139,7 +139,7 @@ char toLetter(int percent)
 		{
 			return 'F';
 		}
-	} 
+	}
 
 	// Invalid user input
 	return 'E';
