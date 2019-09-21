@@ -1,0 +1,49 @@
+/* Game design:
+ * 
+ * There are six attacks:
+ * 0 Cosmetics (1 point)
+ * 1 Tools (1000 points)
+ * 2 Blitz (2000 points)
+ * 3 Fire (600 points)
+ * 4 Technology (1500 points) (Unlocked at 750 points)
+ * 5 Magic (2000 points, unlocked at 500 points)
+ * 
+ * There are four monsters:
+ * 0 Badger Mole (400 points)
+ * 1 Armadillo Bear (600 points)
+ * 2 Shirshu (800 points)
+ * 3 Dragon (1000 points)
+ * 
+ * Attacks have damage multipliers and a custom message for each monster
+ * 
+ */
+
+/* Algorithm
+ * 1. Create message and points tables and populate with data
+ * 2. Declare the following variables:
+ *  A. string to hold the player's username, initialize to ""
+ *  B. int to hold the player's current points, initialize to 100
+ *  C. int to hold random range for choosing monster, initialize to 1
+ *  D. int to hold damage multiplier, initialize to 1
+ *  E. 2 ints to hold attack choice and monster, respectively
+ * 3. Ask player to enter username, store to username variable
+ * 4. Introduce game, tell user how many points they start with
+ * 5. Loop to be iterated five times:
+ *  1. Randomly choose a monster based on user's current points:
+ *   A. If user has over 1000 points, set range to 3
+ *   B. Else if user has over 500 points, set range to 2
+ *   C. Else set points to 1
+ *   D. Generate random number between 0 and range. Assign to monster variable
+ *  2. Tell user which monster they have encountered
+ *  3. Display list of attack choices
+ *  4. Get choice from user, store to attack variable
+ *  5. Look up message in messages table and print to screen
+ *  6. Look up point net in points table and add to user's points
+ *  7. If points is less than zero, the user has lost
+ *   A. Tell the user they lost
+ *   B. Exit the program with code 0
+ *  8. Otherwise, tell the user they won the battle
+ *  9. Tell the user their current points
+ * 6. Tell the user they won the tournament
+ * 7. Exit the program with code 0
+ */
