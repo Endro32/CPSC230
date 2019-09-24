@@ -5,19 +5,16 @@
  *      and includes lore from the TV show Avatar: The Last Airbender. You'll fight
  *      through five monsters, getting more difficult each time. If you die, the game
  *      ends. If you beat all five, you win the game. As you defeat monsters, you gain
- *      their points. At certain point levels, you achieve damage multipliers which help
- *      you defeat the monsters more easily.
+ *      their points. As you gain more points, you will face more difficult monsters.
  **************************************************************************************/
 
 /* Game design:
  * 
- * There are six attacks:
+ * There are four attacks:
  * 0 Cosmetics (1 point)
  * 1 Tools (1000 points)
  * 2 Blitz (2000 points)
  * 3 Fire (600 points)
- * 4 Technology (1500 points) (Unlocked at 750 points)
- * 5 Magic (2000 points, unlocked at 500 points)
  * 
  * There are four monsters:
  * 0 Badger Mole (400 points)
@@ -26,7 +23,6 @@
  * 3 Dragon (1000 points)
  * 
  * Attacks have damage multipliers and a custom message for each monster
- * 
  */
 
 /* Algorithm
@@ -34,16 +30,17 @@
  * 2. Declare the following variables:
  *  A. string to hold the player's username, initialize to ""
  *  B. int to hold the player's current points, initialize to 100
- *  C. int to hold random range for choosing monster, initialize to 1
- *  D. int to hold damage multiplier, initialize to 1
- *  E. 2 ints to hold attack choice and monster, respectively
+ *  C. int to hold random range for choosing monster, initialize to 2
+ *  D. int to hold offset, will be added to monster value, initialize to 0
+ *  E. int to hold damage multiplier, initialize to 1
+ *  F. 2 ints to hold attack choice and monster, respectively
  * 3. Ask player to enter username, store to username variable
  * 4. Introduce game, tell user how many points they start with
  * 5. Loop to be iterated five times:
  *  1. Randomly choose a monster based on user's current points:
- *   A. If user has over 1000 points, set range to 3
- *   B. Else if user has over 500 points, set range to 2
- *   C. Else set range to 1
+ *   A. If user has over 1000 points, set range to 3 and offset to 1
+ *   B. Else if user has over 500 points, set range to 3 and offset to 0
+ *   C. Else set range to 2 and offset to 0
  *   D. Generate random number between 0 and range. Assign to monster variable
  *  2. Tell user which monster they have encountered
  *  3. Display list of attack choices
@@ -92,7 +89,7 @@ int main()
     messages[3][2] = "attacked shirshu with fire, dealing 600 damage.\nShirshu attacked you with toxins and claws, dealing 4000 damage.";
     messages[3][3] = "attacked dragon with fire, dealing no damage.\nDragon incinerated you with firebending, dealing 5000 damage."; //(0x)
     
-    // Adding points to the points table (refer to messages table to see which entry is which)
+    // Adding points to the netpoints table (refer to messages table to see which entry is which)
     netpoints[0][0] = -3000;
     netpoints[0][1] = -2000;
     netpoints[0][2] = 800;
@@ -116,7 +113,7 @@ int main()
     // Now let's create the game variables
     string username = "";
     int points = 100;
-    int range = 1;
+    int range = 1, offset = 0;
     int multiplier = 1;
     int attack, monster;
     
@@ -128,17 +125,28 @@ int main()
     cin >> username;
     cout << "Welcome to the game, " << username << "!\nYou currently have " << points << " points.\n\n";
     
+    // Battle loop runs five times
     for(int i = 0; i < 5; i++)
     {
         // Determine available monster choices based on user's current score
-        if(points > 1000)
-            range = 4;
-        else if(points > 500)
+        if(points > 1000) // Available options are armadillo bear, shirshu, and dragon
+        {
             range = 3;
-        else
+            offset = 1;
+        }
+        else if(points > 500) // Available options are badger mole, armadillo bear, and shirshu
+        {
+            range = 3;
+            offset = 0;
+        }
+        else // Available options are badger mole and armadillo bear
+        {
             range = 2;
+            offset = 0;
+        }
+
         // Randomly choose a monster
-        monster = rand() % range;
+        monster = (rand() % range) + offset;
         
         string output = "";
         switch(monster) // Set output based on which monster was chosen by the RNG
@@ -166,7 +174,7 @@ int main()
         // Battle results
         cout << "\n\n" << username << " " << messages[attack][monster] << endl;
         points += netpoints[attack][monster];
-        if(points <= 0)
+        if(points <= 0) // If user loses, tell them game over and exit the program
         {
             cout << username << " has lost the battle. Game over!";
             return 0;
