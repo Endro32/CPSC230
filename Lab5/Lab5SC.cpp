@@ -52,6 +52,6 @@ bool compute_coins(int coin_value, int &num, int &amount_left)
         return false;
     
     num = amount_left / coin_value;
-    amount_left -= num * coin_value;
+    amount_left = num % coin_value;
     return true;
 }
