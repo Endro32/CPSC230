@@ -11,24 +11,27 @@ int main()
     const int QVAL = 25, DVAL = 10, PVAL = 1;
     int changeOwed = 1, remainder = 0;
     
-    while(changeOwed > 0)
+    while (changeOwed > 0)
     {
         // Input
         cout << "How much change do you owe? (0 to quit): ";
         cin >> changeOwed;
-        
+
         // Verify user input
-        if(changeOwed >= 100)
+        if (changeOwed >= 100) // If over 100, make the user do it again
         {
             cout << "BROO YOU LOOK LIKE PIZZA BRO\n";
             continue;
+        } else if (changeOwed <= 0) // If less than or equal to zero, continue and exit
+        {
+        	continue;
         }
         
         // Computation
         remainder = changeOwed;
         if (!compute_coins(QVAL, q, remainder) ||
             !compute_coins(DVAL, d, remainder))
-            return 1;
+            return 1; // Exit with error if parameters are somehow invalid
         p = remainder;
         
         // Output
@@ -40,6 +43,7 @@ int main()
 
 /**
  * Computes the maximum number of a certain coin attainable for a certain change value
+ * Returns false if parameters are invalid
  */
 bool compute_coins(int coin_value, int &num, int &amount_left)
 {
