@@ -19,6 +19,7 @@
 #include <windows.h>
 
 #include "Player.h"
+#include "Deck.h"
 
 using namespace std;
 
@@ -28,28 +29,26 @@ string getCardLine(int, string, string);
 string getCardStackLine(int, int);
 string space(int);
 
-namespace suits {
-    const string hearts = "♥";
-    const string spades = "♠";
-    const string diamonds = "♦";
-    const string clubs = "♣";
-}
-
 // Game class
 class Game {
 	Player *players[4];
+	Deck *deck;
 	public:
 		Game() {
 			players[0] = new Player("Stefan");
 			players[1] = new Player("Ultron");
 			players[2] = new Player("Jarvis");
 			players[3] = new Player("Friday");
+
+			deck = new Deck();
 		}
 		~Game() {
 			delete players[0];
 			delete players[1];
 			delete players[2];
 			delete players[3];
+
+			delete deck;
 		}
 };
 
