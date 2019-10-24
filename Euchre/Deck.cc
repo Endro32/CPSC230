@@ -6,6 +6,9 @@
  */
 
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <utility>
 
 #include "Deck.h"
 
@@ -15,21 +18,25 @@
  * int rank
  */
 
-Card::Card(int s, int r) {
+const std::string Card::SPADESYM = "♠";
+const std::string Card::HEARTSYM = "♥";
+const std::string Card::DIAMONDSYM = "♦";
+const std::string Card::CLUBSYM = "♣";
+
+Card::Card(int s, int r) : suit(s), rank(r) { // Constructor
 	if (suit < 0 || suit > 3 || (rank != 1 && rank < 9) || rank > 13) {
 		std::cout << "An internal error has occurred";
 		// TODO throw an exception
 	}
-	// It has now been officially determined that the rank and suit given are valid
-
-	suit = s;
-	rank = r;
 }
 
-Card::~Card() {
+Card::~Card() {  // Destructor
 
 }
 
+/**
+ * Returns the integer value for the suit of this card
+ */
 int Card::getSuit() {
 	return suit;
 }
@@ -37,7 +44,7 @@ int Card::getSuit() {
 /**
  * Returns the symbol for the given suit as a string
  */
-static std::string Card::getSuitSymbol(int s) {
+std::string Card::getSuitSymbol(int s) {
 	switch (s) {
 	case Card::SPADES:		return Card::SPADESYM;
 	case Card::HEARTS:		return Card::HEARTSYM;
@@ -63,7 +70,7 @@ std::string Card::getSuitAsString() {
 	case Card::HEARTS:		return "Hearts";
 	case Card::DIAMONDS:	return "Diamonds";
 	case Card::CLUBS:		return "Clubs";
-	default:				return "";
+	default:				return "Fail";
 	}
 }
 
@@ -82,12 +89,12 @@ std::string Card::getRankAsString() {
 	case Card::JACK:		return "Jack";
 	case Card::QUEEN:		return "Queen";
 	case Card::KING:		return "King";
-	default:				return "";
+	default:				return "Fail";
 	}
 }
 
 /**
- * Returns a strength value between 0 and 13
+ * Returns a strength value between 0 and 13 for this card
  * 1-6 denotes the rankings of the currently played suit
  * 7-13 denotes the rankings of the trump cards
  * 0 denotes a card from a suit other than the currently played suit or trump
@@ -105,11 +112,20 @@ int Card::getStrength(int trump, int curSuit) {
 	}
 
 	int leftBower;				// Determine which suite the left bower is in
-	if (suit == Card::SPADES || suit == Card::HEARTS)
-		leftBower = suit + 2;
-	else if (suit == Card::DIAMONDS || suit == Card::CLUBS)
-		leftBower = suit - 2;
-								// Now check if this card is the left bower
+	switch (trump) {
+	case SPADES:
+		leftBower = CLUBS;
+		break;
+	case HEARTS:
+		leftBower = DIAMONDS;
+		break;
+	case CLUBS:
+		leftBower = SPADES;
+		break;
+	case DIAMONDS:
+		leftBower = HEARTS;
+		break;
+	}							// Now check if this card is the left bower
 	if (suit == leftBower && rank == Card::JACK)
 		return 12;				// Return value for the left bower
 
@@ -126,13 +142,46 @@ int Card::getStrength(int trump, int curSuit) {
 
 // Deck Class ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+/**
+ * Creates a deck of all the Euchre cards
+ */
 Deck::Deck() {
-	// TODO Auto-generated constructor stub
+	for (int s = 0; s <= 3; s++) {				// For each suit
+		cards.push_back(new Card(s, 1));			// Create ace
+		for (int r = 9; r <= 13; r++) {			// For each other card rank
+			cards.push_back(new Card(s, r));		// Create card
+		}
+	}
 
+	cardsUsed = 0;
 }
 
+/**
+ * Frees the memory of each card object stored in the array
+ */
 Deck::~Deck() {
-	// TODO Auto-generated destructor stub
+	int i = 0;									// Array index
+	for (int s = 0; s <= 3; s++) {				// For each suit
+		delete cards[i];						// Delete ace
+		for (int r = 9; r <= 13; r++) {			// For each other card rank
+			delete cards[i];					// Delete card
+		}
+	}
 }
 
+void Deck::shuffle() {
+	srand((unsigned) time(0)); 					// Set the random seed
+	for (int i = 0; i <= 24; i++) {				// For each card in the deck
+		int random = (rand() % 24);				// Get next random number
+		std::swap(cards[i], cards[random]);
+	}
 
+	cardsUsed = 0;								// Deck is now full again
+}
+
+Card Deck::dealCard() {
+	if (cardsUsed >= 24)						// If all the cards have been used
+		throw std::logic_error("No more cards left in the deck!");
+
+	return *cards[cardsUsed++];					// Return the next card in the deck and increment cardsUsed
+}

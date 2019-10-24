@@ -30,9 +30,10 @@ string getCardStackLine(int, int);
 string space(int);
 
 // Game class
+/*
 class Game {
-	Player *players[4];
-	Deck *deck;
+	Player players[] = new Player[4];
+	//Deck *deck;
 	public:
 		Game() {
 			players[0] = new Player("Stefan");
@@ -40,7 +41,7 @@ class Game {
 			players[2] = new Player("Jarvis");
 			players[3] = new Player("Friday");
 
-			deck = new Deck();
+			//deck = new Deck();
 		}
 		~Game() {
 			delete players[0];
@@ -48,14 +49,23 @@ class Game {
 			delete players[2];
 			delete players[3];
 
-			delete deck;
+			delete players;
+			//delete deck;
 		}
-};
+};*/
 
 int main() {
     SetConsoleOutputCP(65001);
     
-    Game game;
+    Deck deck;
+    deck.shuffle();
+    Card a = deck.dealCard();
+    cout << a.getRankAsString() << " of " << a.getSuitAsString() << endl;
+    Card b = deck.dealCard();
+    cout << b.getRankAsString() << " of " << b.getSuitAsString() << endl;
+
+
+    // Game game;
 
 	// render();
     return 0;
