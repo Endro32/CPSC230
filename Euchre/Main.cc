@@ -64,7 +64,6 @@ int main() {
     Card b = deck.dealCard();
     cout << b.getRankAsString() << " of " << b.getSuitAsString() << endl;
 
-
     // Game game;
 
 	// render();

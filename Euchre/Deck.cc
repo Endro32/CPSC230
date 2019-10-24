@@ -162,9 +162,9 @@ Deck::Deck() {
 Deck::~Deck() {
 	int i = 0;									// Array index
 	for (int s = 0; s <= 3; s++) {				// For each suit
-		delete cards[i];						// Delete ace
+		delete cards[i++];						// Delete ace
 		for (int r = 9; r <= 13; r++) {			// For each other card rank
-			delete cards[i];					// Delete card
+			delete cards[i++];					// Delete card
 		}
 	}
 }
