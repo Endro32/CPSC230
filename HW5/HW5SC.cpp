@@ -12,6 +12,8 @@ using namespace std;
 
 void getData(double&, double&);
 void printData(double rect, double elli);
+double area_rectangle(double, double);
+double area_ellipse(double, double);
 
 const double PI = 3.141592;
 
@@ -28,8 +30,8 @@ int main()
 	getData(radiusa, radiusb);
 
 	// Calculation
-	recarea = base * height;
-	elliarea = PI * radiusa * radiusb;
+	recarea = area_rectangle(base, height);
+	elliarea = area_ellipse(radiusa, radiusb);
 
 	// Output
 	printData(recarea, elliarea);
@@ -57,4 +59,22 @@ void printData(double rect, double elli)
 
 	cout << "\nThe area of the rectangle is " << rect
 		<< "\nThe area of the ellipse is " << elli;
+}
+
+/**
+ * Computes the area of a rectangle with given length and width.
+ * Returns area as a double
+ */
+double area_rectangle(double len, double wid)
+{
+	return len * wid;
+}
+
+/**
+ * Computes the area of an ellipse with the specified radii.
+ * Returns area as a double
+ */
+double area_ellipse(double rada, double radb)
+{
+	return PI * rada * radb;
 }
