@@ -8,7 +8,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-#include <utility>
+#include <algorithm>
 
 #include "Deck.h"
 
@@ -31,7 +31,6 @@ Card::Card(int s, int r) : suit(s), rank(r) { // Constructor
 }
 
 Card::~Card() {  // Destructor
-
 }
 
 /**
@@ -179,7 +178,7 @@ void Deck::shuffle() {
 	cardsUsed = 0;								// Deck is now full again
 }
 
-Card Deck::dealCard() {
+Card &Deck::dealCard() {
 	if (cardsUsed >= 24)						// If all the cards have been used
 		throw std::logic_error("No more cards left in the deck!");
 

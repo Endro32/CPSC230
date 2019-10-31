@@ -6,8 +6,6 @@
  */
 
 /*
- * The cards are represented by string keys: "rank.suitname"
- * 
  * Each player is represented by an object of the Player type (class to be implemented)
  * This class stores the data for the cards in the player's hand
  * It also has functions for working playing the cards that are in their hand
@@ -17,6 +15,7 @@
 #include <iostream>
 #include <sstream>
 #include <windows.h>
+#include <vector>
 
 #include "Player.h"
 #include "Deck.h"
@@ -56,12 +55,12 @@ class Game {
 
 int main() {
     SetConsoleOutputCP(65001);
-    
+
     Deck deck;
     deck.shuffle();
-    Card a = deck.dealCard();
+    Card &a = deck.dealCard();
     cout << a.getRankAsString() << " of " << a.getSuitAsString() << endl;
-    Card b = deck.dealCard();
+    Card &b = deck.dealCard();
     cout << b.getRankAsString() << " of " << b.getSuitAsString() << endl;
 
     // Game game;
