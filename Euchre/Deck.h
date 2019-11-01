@@ -48,7 +48,7 @@ public:
 	virtual ~Deck();
 
 	void shuffle();
-	Card &dealCard();
+	Card *dealCard();
 private:
 	int cardsUsed;
 	std::vector<Card*> cards;

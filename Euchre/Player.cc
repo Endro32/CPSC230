@@ -10,39 +10,35 @@
 
 #include "Player.h"
 
-Player::Player(std::string n, bool h) {
-	name = n;
-	human = h;
+Player::Player(std::string n, bool h): name(n), human(h) {
 	std::cout << "Hello, my name is " << name << std::endl;
-
 }
 
-Player::~Player() {
-	std::cout << "Player deleted\n";
-}
+Player::~Player() { }
 
 // Until the AI is done, all decisions will be made by the user
-bool promptPickUp() {
+bool Player::promptPickUp() {
 	std::string s;
 	std::cout << "Do you want the dealer to pick it up? [Y/n]: ";
 	std::cin >> s;
 	return std::tolower(s[0]) == 'y';
 }
-bool decidePickUp() {
+bool Player::decidePickUp() {
 	return promptPickUp();
 }
 
-bool promptGoAlone() {
+bool Player::promptGoAlone() {
 	std::string s;
 	std::cout << "Do you want to go alone? [Y/n]: ";
 	std::cin >> s;
 	return std::tolower(s[0]) == 'y';
 }
-bool decideGoAlone() {
+bool Player::decideGoAlone() {
 	return promptGoAlone();
 }
 
 int Player::promptPlayCard() {
+
 	std::string s;
 	int i;
 
@@ -53,20 +49,36 @@ int Player::promptPlayCard() {
 		std::cout << "Which card do you want to play? [1-" << hand.size() << "]: ";
 		std::cin >> s;
 		i = s[0] - '0';
-	} while(i > hand.size() || i <= 0);
+	} while (i > hand.size() || i <= 0);
 
-	return i;
+	return i - 1;
 }
 int Player::decidePlayCard() {
 	return promptPlayCard();
 }
 
-void clearHand() {}
-bool giveCard(Card &c) {}
+// Clears the player's hand
+void Player::clearHand() {
+	hand.clear();
+}
+
+/** Pass a pointer to the player. If the hand isn't full, the pointer will be added to the hand vector
+ *  If it fails, it will return false
+ */
+bool Player::giveCard(Card *c) {
+	if(hand.size() >= 5)
+		return false;
+
+	hand.push_back(c);
+	return true;
+}
+
+// Get the number cards in the player's hand
 std::vector<Card*>::size_type Player::getHandSize() {
 	return hand.size();
 }
 
+// Request that the player decide to have the dealer pick it up or not
 bool Player::wantPickUp() {
 	if (human)
 		return promptPickUp();
@@ -74,6 +86,7 @@ bool Player::wantPickUp() {
 		return decidePickUp();
 }
 
+// Ask if the player wants to go alone
 bool Player::goingAlone() {
 	if (human)
 		return promptGoAlone();
@@ -85,15 +98,18 @@ bool Player::goingAlone() {
  * Asks user to play a card
  * User or AI decides which card to play. That card is then removed from the hand and returned
  */
-Card &Player::playCard() {
+Card *Player::playCard() {
 	int i;
-	if (human)
+	if (hand.size() == 1)
+		i = 0;
+	else if (human)
 		i = promptPlayCard();
 	else
 		i = decidePlayCard();
 
-	Card card = hand[i];
+	Card *card = hand[i];
 	hand.erase(hand.begin() + i);
 
 	return card;
 }
+

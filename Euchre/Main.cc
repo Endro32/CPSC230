@@ -58,10 +58,18 @@ int main() {
 
     Deck deck;
     deck.shuffle();
-    Card &a = deck.dealCard();
-    cout << a.getRankAsString() << " of " << a.getSuitAsString() << endl;
-    Card &b = deck.dealCard();
-    cout << b.getRankAsString() << " of " << b.getSuitAsString() << endl;
+
+    Player jarvis("Jarvis", true);
+
+    for (int i = 0; i < 8; i++) {
+    	if(!jarvis.giveCard(deck.dealCard()))
+    		break;
+    }
+
+    while (jarvis.getHandSize() > 0) {
+        Card *a = jarvis.playCard();
+        cout << a->getRankAsString() << " of " << a->getSuitAsString() << endl;
+    }
 
     // Game game;
 

@@ -178,9 +178,9 @@ void Deck::shuffle() {
 	cardsUsed = 0;								// Deck is now full again
 }
 
-Card &Deck::dealCard() {
+Card *Deck::dealCard() {
 	if (cardsUsed >= 24)						// If all the cards have been used
 		throw std::logic_error("No more cards left in the deck!");
 
-	return *cards[cardsUsed++];					// Return the next card in the deck and increment cardsUsed
+	return cards[cardsUsed++];					// Return the next card in the deck and increment cardsUsed
 }
