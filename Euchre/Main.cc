@@ -17,6 +17,7 @@
 #include <windows.h>
 #include <vector>
 
+#include "Game.h"
 #include "Player.h"
 #include "Deck.h"
 
@@ -28,38 +29,13 @@ string getCardLine(int, string, string);
 string getCardStackLine(int, int);
 string space(int);
 
-// Game class
-/*
-class Game {
-	Player players[] = new Player[4];
-	//Deck *deck;
-	public:
-		Game() {
-			players[0] = new Player("Stefan");
-			players[1] = new Player("Ultron");
-			players[2] = new Player("Jarvis");
-			players[3] = new Player("Friday");
-
-			//deck = new Deck();
-		}
-		~Game() {
-			delete players[0];
-			delete players[1];
-			delete players[2];
-			delete players[3];
-
-			delete players;
-			//delete deck;
-		}
-};*/
-
 int main() {
     SetConsoleOutputCP(65001);
 
     Deck deck;
     deck.shuffle();
 
-    Player jarvis("Jarvis", true);
+    Player jarvis("Jarvis");
 
     for (int i = 0; i < 8; i++) {
     	if(!jarvis.giveCard(deck.dealCard()))
@@ -150,7 +126,7 @@ string getCardStackLine(int line, int numberOfCards) {
         concat = "─┐";
     else if (line == 6)
         concat = "─┘";
-    for (int i = numberOfCards; --i; i > 0)
+    for (int i = numberOfCards; i > 0; i--)
         ret += concat;
     return ret;
 }

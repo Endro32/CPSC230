@@ -8,6 +8,7 @@
 #ifndef DECK_H_
 #define DECK_H_
 
+#include <string>
 #include <vector>
 
 class Card {
@@ -49,6 +50,7 @@ public:
 
 	void shuffle();
 	Card *dealCard();
+	void put_back(Card*);
 private:
 	int cardsUsed;
 	std::vector<Card*> cards;

@@ -10,7 +10,12 @@
 
 #include "Player.h"
 
-Player::Player(std::string n, bool h): name(n), human(h) {
+Player::Player(): human(true) {
+	std::cout << "Please enter a username: ";
+	std::cin >> name;
+}
+
+Player::Player(std::string n): name(n), human(false) {
 	std::cout << "Hello, my name is " << name << std::endl;
 }
 
@@ -78,6 +83,10 @@ std::vector<Card*>::size_type Player::getHandSize() {
 	return hand.size();
 }
 
+Card *Player::getLastPlayedCard() {
+	return lastPlayed;
+}
+
 // Request that the player decide to have the dealer pick it up or not
 bool Player::wantPickUp() {
 	if (human)
@@ -107,9 +116,12 @@ Card *Player::playCard() {
 	else
 		i = decidePlayCard();
 
-	Card *card = hand[i];
+	lastPlayed = hand[i];
 	hand.erase(hand.begin() + i);
 
-	return card;
+	return lastPlayed;
 }
 
+void Player::winTrick() {
+	tricksWon++;
+}
