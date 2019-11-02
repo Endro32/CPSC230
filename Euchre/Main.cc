@@ -17,21 +17,16 @@
 #include <windows.h>
 #include <vector>
 
+#include "Main.h"
 #include "Game.h"
 #include "Player.h"
 #include "Deck.h"
 
 using namespace std;
 
-// Function prototypes
-void render();
-string getCardLine(int, string, string);
-string getCardStackLine(int, int);
-string space(int);
-
 int main() {
     SetConsoleOutputCP(65001);
-
+    /*
     Deck deck;
     deck.shuffle();
 
@@ -45,9 +40,9 @@ int main() {
     while (jarvis.getHandSize() > 0) {
         Card *a = jarvis.playCard();
         cout << a->getRankAsString() << " of " << a->getSuitAsString() << endl;
-    }
+    }*/
 
-    // Game game;
+    Game game;
 
 	// render();
     return 0;

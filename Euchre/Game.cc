@@ -5,6 +5,7 @@
  *      Author: webk7
  */
 
+#include <iostream>
 #include <cstdlib>
 #include <ctime>
 
@@ -23,6 +24,8 @@ Game::Game() {
 
 	player02Score = 0;
 	player13Score = 0;
+
+	playHand();
 }
 
 Game::~Game() {
@@ -47,4 +50,73 @@ Player *Game::getPlayer(int i) {
 		return player2;
 	else
 		return player3;
+}
+
+// Resets and shuffles deck, deals each player five cards after clearing their hand
+void Game::dealHand() {
+	//deck->shuffle();
+	Player *cur;
+	for (int p = 0; p < 4; p++) {		// For each player
+		cur = getPlayer(p);
+		cur->clearHand();
+		for (int c = 0; c < 5; c++) {	// For five cards
+			cur->giveCard(deck->dealCard());
+		}
+	}
+
+	std::cout << "Cards have been dealt!\n";
+}
+
+void Game::playTrick() {
+
+}
+
+void Game::playHand() {
+	if (++dealer > 4) // Increment dealer and loop back to zero if necessary
+		dealer = 0;
+	Player *dealerO = getPlayer(dealer);		// Dealer Object
+	std::cout << dealerO->getName() << " is dealer.\n";
+
+	dealHand();
+	top = deck->flipTop();
+	std::cout << "Top card is " << top->getSuitAsString() << std::endl;
+
+	Player *player;
+	for (int i = 1; i < 10; i++) {		// Should never terminate here, but just in case, it won't be an infinite loop
+		player = getPlayer((i + dealer) % 4);
+
+		if (i <= 4) {
+			if (player->wantPickUp()) {	// If player wants dealer to pick it up
+				trump = top->getSuit();
+				std::cout << player->getName() << " made the dealer pick it up.\n";
+				deck->put_back(dealerO->discard());
+				dealerO->giveCard(deck->dealCard());
+				break;
+
+			} else {	// Player passed
+				std::cout << player->getName() << " passed.\n";
+				continue;
+			}
+
+		} else if (i <= 8) {
+			// nameTrump() has built-in validation, so none is needed here
+			int t = player->nameTrump();
+			if (t != -1) {	// If player named trump
+				trump = t;
+				std::cout << player->getName() << " named trump.\n";
+				break;
+
+			} else {	// Player passed
+				std::cout << player->getName() << " passed.\n";
+				continue;
+			}
+
+		} else {
+			std::cout << "\nReturning...\n";
+			return;
+		}
+	}
+
+	std::cout << "Trump is " << trump;
+
 }

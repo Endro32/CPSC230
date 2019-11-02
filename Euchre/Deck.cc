@@ -184,3 +184,18 @@ Card *Deck::dealCard() {
 
 	return cards[cardsUsed++];					// Return the next card in the deck and increment cardsUsed
 }
+
+Card *Deck::flipTop() {
+	if (cardsUsed >= 24)						// If all the cards have been used
+		throw std::logic_error("No more cards left in the deck!");
+
+	return cards[cardsUsed];					// Return the next card in the deck and increment cardsUsed
+}
+
+void Deck::topToBottom() {
+	std::swap(cards[cardsUsed], cards[0]);
+}
+
+void Deck::put_back(Card *card) {
+
+}

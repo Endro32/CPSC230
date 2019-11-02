@@ -49,7 +49,9 @@ public:
 	virtual ~Deck();
 
 	void shuffle();
-	Card *dealCard();
+	Card *dealCard();		// Returns the top card on the deck and removes it
+	Card *flipTop();		// Returns the top card on the deck, but doesn't deal it
+	void topToBottom();		// Swap top and bottom cards of deck
 	void put_back(Card*);
 private:
 	int cardsUsed;

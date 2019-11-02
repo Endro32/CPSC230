@@ -21,9 +21,12 @@ public:
 	Game();
 	virtual ~Game();
 private:
+	// Variables
 	Deck *deck;
 	std::vector<Card*> used;			// Will hold all of the cards from previous tricks
 	int dealer;
+	Card *top;							// Top card in the deck
+	int trump;							// Trump suit
 
 	Player *player0;
 	Player *player1;
@@ -33,7 +36,12 @@ private:
 	int player02Score;
 	int player13Score;
 
+	// Internal functions
 	Player* getPlayer(int);				// Because I'm really lazy; gets player by index
+
+	void dealHand();
+	void playTrick();
+	void playHand();
 };
 
 #endif /* GAME_H_ */

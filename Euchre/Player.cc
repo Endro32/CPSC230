@@ -10,12 +10,12 @@
 
 #include "Player.h"
 
-Player::Player(): human(true) {
+Player::Player(): human(true), tricksWon(0) {
 	std::cout << "Please enter a username: ";
 	std::cin >> name;
 }
 
-Player::Player(std::string n): name(n), human(false) {
+Player::Player(std::string n): name(n), human(false), tricksWon(0) {
 	std::cout << "Hello, my name is " << name << std::endl;
 }
 
@@ -23,6 +23,8 @@ Player::~Player() { }
 
 // Until the AI is done, all decisions will be made by the user
 bool Player::promptPickUp() {
+	printHand();
+
 	std::string s;
 	std::cout << "Do you want the dealer to pick it up? [Y/n]: ";
 	std::cin >> s;
@@ -30,6 +32,37 @@ bool Player::promptPickUp() {
 }
 bool Player::decidePickUp() {
 	return promptPickUp();
+}
+
+int Player::promptNameTrump() {
+	int t = 5;
+	std::string in;
+
+	while (t > 4 || t < -1) {
+		if (!in.empty())
+			std::cout << "Invalid choice!\n";
+
+		std::cout << "Would you like to name trump? [Spades, Hearts, Clubs, Diamonds, Pass]: ";
+		std::cin >> in;
+
+		switch (std::tolower(in[0])) {
+		case 's':
+			return Card::SPADES;
+		case 'h':
+			return Card::HEARTS;
+		case 'c':
+			return Card::CLUBS;
+		case 'd':
+			return Card::DIAMONDS;
+		case 'p':
+			return -1;
+		}
+	} ;
+
+	return t; // Should never hit this point, but just in case
+}
+int Player::decideNameTrump() {
+	return promptNameTrump();
 }
 
 bool Player::promptGoAlone() {
@@ -43,6 +76,7 @@ bool Player::decideGoAlone() {
 }
 
 int Player::promptPlayCard() {
+	printHand();
 
 	std::string s;
 	int i;
@@ -54,12 +88,46 @@ int Player::promptPlayCard() {
 		std::cout << "Which card do you want to play? [1-" << hand.size() << "]: ";
 		std::cin >> s;
 		i = s[0] - '0';
-	} while (i > hand.size() || i <= 0);
+	} while (i > static_cast<int>(hand.size()) || i <= 0);
 
 	return i - 1;
 }
 int Player::decidePlayCard() {
 	return promptPlayCard();
+}
+
+int Player::promptDiscard() {
+	printHand();
+
+		std::string s;
+		int i;
+
+		do {
+			if (!s.empty())
+				std::cout << "That's not a valid card!\n";
+
+			std::cout << "Which card would you like to discard? [1-" << hand.size() << "]: ";
+			std::cin >> s;
+			i = s[0] - '0';
+		} while (i > static_cast<int>(hand.size()) || i <= 0);
+
+		return i - 1;
+}
+int Player::decideDiscard() {
+	return promptDiscard();
+}
+
+void Player::printHand() {
+	std::cout << name << ", your cards are:\n";
+	Card *c;
+	for (unsigned i = 0; i < hand.size(); i++) {
+		c = hand[i];
+		std::cout << i + 1 << ". " << c->getRankAsString() << " of " << c->getSuitAsString() << std::endl;
+	}
+}
+
+std::string Player::getName() {
+	return name;
 }
 
 // Clears the player's hand
@@ -95,6 +163,13 @@ bool Player::wantPickUp() {
 		return decidePickUp();
 }
 
+int Player::nameTrump() {
+	if (human)
+			return promptNameTrump();
+		else
+			return decideNameTrump();
+}
+
 // Ask if the player wants to go alone
 bool Player::goingAlone() {
 	if (human)
@@ -104,7 +179,7 @@ bool Player::goingAlone() {
 }
 
 /**
- * Asks user to play a card
+ * Asks player to play a card
  * User or AI decides which card to play. That card is then removed from the hand and returned
  */
 Card *Player::playCard() {
@@ -120,6 +195,25 @@ Card *Player::playCard() {
 	hand.erase(hand.begin() + i);
 
 	return lastPlayed;
+}
+
+/**
+ * Asks player to discard a card
+ * User or AI decides which card to discard. That card is then removed from the hand and returned
+ */
+Card *Player::discard() {
+	int i;
+	if (hand.size() == 1)
+		i = 0;
+	else if (human)
+		i = promptDiscard();
+	else
+		i = decideDiscard();
+
+	Card* ret;
+	hand.erase(hand.begin() + i);
+
+	return ret;
 }
 
 void Player::winTrick() {
