@@ -52,6 +52,26 @@ Player *Game::getPlayer(int i) {
 		return player3;
 }
 
+// Gets a player by their partner's index
+Player *Game::getPartner(int i) {
+	return getPlayer(getPartnerIndex(i));
+}
+
+// Gets a player's index by their partner's index
+int Game::getPartnerIndex(int i) {
+	if (i >= 4)
+		i = i % 4;
+
+	if (i <= 0)				// Player 0
+		return 2;
+	else if (i == 1)		// Player 1
+		return 3;
+	else if (i == 2)		// Player 2
+		return 0;
+	else					// Player 3
+		return 1;
+}
+
 // Resets and shuffles deck, deals each player five cards after clearing their hand
 void Game::dealHand() {
 	//deck->shuffle();
@@ -59,6 +79,7 @@ void Game::dealHand() {
 	for (int p = 0; p < 4; p++) {		// For each player
 		cur = getPlayer(p);
 		cur->clearHand();
+		cur->resetTricksWon();
 		for (int c = 0; c < 5; c++) {	// For five cards
 			cur->giveCard(deck->dealCard());
 		}
@@ -67,8 +88,36 @@ void Game::dealHand() {
 	std::cout << "Cards have been dealt!\n";
 }
 
+/*
+ * Plays a trick!
+ * Makes each player play a card, starting with the leader
+ * At the end, whoever played the highest card wins the trick and will be the leader of the next trick
+ */
 void Game::playTrick() {
+	Card *curCard;
+	int strongest, winner, index;
+																// For the leader of the trick
+	curCard = getPlayer(leader)->playCard(-1);					// Play a card
+	curSuit = curCard->getSuit();								// Set the suit of the current trick
+	strongest = curCard->getStrength(trump, curSuit);			// Currently strongest card is the one first played (duh)
+	winner = leader;											// The leader played that card and has the lead
 
+	for (int p = 1; p < 4; p++) {								// For the other three players
+		index = (p + leader) % 4;								// Calculate the index of the player
+
+		if (goingAlone && index == getPartnerIndex(maker))		// If this player's partner is going alone
+			continue;											// Skip!
+
+		curCard = getPlayer(index)->playCard(curSuit);
+		int strength = curCard->getStrength(trump, curSuit);
+		if (strength > strongest) {								// If it is the strongest card thus far
+			strongest = strength;
+			winner = index;
+		}
+	}										// Now all four players have played their cards, and we know who won the trick
+
+	getPlayer(winner)->winTrick();
+	leader = winner;
 }
 
 void Game::playHand() {
@@ -82,8 +131,10 @@ void Game::playHand() {
 	std::cout << "Top card is " << top->getSuitAsString() << std::endl;
 
 	Player *player;
+	int playerIndex;
 	for (int i = 1; i < 10; i++) {		// Should never terminate here, but just in case, it won't be an infinite loop
-		player = getPlayer((i + dealer) % 4);
+		playerIndex = (i + dealer) % 4;
+		player = getPlayer(playerIndex);
 
 		if (i <= 4) {
 			if (player->wantPickUp()) {	// If player wants dealer to pick it up
@@ -91,6 +142,8 @@ void Game::playHand() {
 				std::cout << player->getName() << " made the dealer pick it up.\n";
 				deck->put_back(dealerO->discard());
 				dealerO->giveCard(deck->dealCard());
+				maker = playerIndex;
+				goingAlone = player->goingAlone();
 				break;
 
 			} else {	// Player passed
@@ -104,6 +157,8 @@ void Game::playHand() {
 			if (t != -1) {	// If player named trump
 				trump = t;
 				std::cout << player->getName() << " named trump.\n";
+				maker = playerIndex;
+				goingAlone = player->goingAlone();
 				break;
 
 			} else {	// Player passed
@@ -119,4 +174,35 @@ void Game::playHand() {
 
 	std::cout << "Trump is " << trump;
 
+	leader = (dealer + 1) % 4;								// Leader of the first trick is immediately left of dealer
+	if (goingAlone && getPartnerIndex(maker) == leader)		// If that player's partner is going alone
+		leader = (leader + 1) % 4;							// Leader of the first trick is directly across from the dealer
+
+	for (int t = 0; t < 5; t++) {		// Play 5 tricks
+		playTrick();
+	}
+
+	int makerTricks = getPlayer(maker)->getTricksWon() + getPartner(maker)->getTricksWon();
+	int *makerScore, *defenderScore;
+
+	if (maker == 0 || maker == 2) {		// Determine which score is which
+		makerScore = &player02Score;
+		defenderScore = &player13Score;
+	} else if (maker == 1 || maker == 3) {
+		makerScore = &player13Score;
+		defenderScore = &player02Score;
+	} else
+		throw std::logic_error("I'm a dolphin");
+
+	if (makerTricks >= 5) {				// Makers win all 5 tricks
+		if (goingAlone) {				// While playing alone
+			*makerScore += 4;
+		} else {						// Together
+			*makerScore += 2;
+		}
+	} else if(makerTricks >= 3) {		// Makers win 3 or 4 tricks
+		*makerScore++;
+	} else {							// Makers win less than 3 tricks; Euchre!
+		*defenderScore += 2;
+	}
 }

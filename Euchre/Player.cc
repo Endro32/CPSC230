@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
 
 #include "Player.h"
 
@@ -35,6 +36,8 @@ bool Player::decidePickUp() {
 }
 
 int Player::promptNameTrump() {
+	printHand();
+
 	int t = 5;
 	std::string in;
 
@@ -75,25 +78,54 @@ bool Player::decideGoAlone() {
 	return promptGoAlone();
 }
 
-int Player::promptPlayCard() {
-	printHand();
+int Player::promptPlayCard(int suit) {
+	std::map<int, Card*> choices;
+	std::map<int, Card*>::iterator it;
+	Card *c;
+	unsigned i;
+	std::string in;
 
-	std::string s;
-	int i;
+	if (suit >= 0) {									// If the player is not leading the trick
+		for (i = 0; i < hand.size(); i++) {				// For every card in the player's hand
+			c = hand[i];
+			if (c->getSuit() == suit) {					// Register index and pointer to map if it follows suit
+				choices.insert(std::pair<int, Card*>(i, c));
+			}
+		}
+	}
+
+	if (choices.size() == 1) {							// If player has only one card that follows suit
+		it = choices.begin();							// Automatically play the only available card
+		c = it->second;
+		std::cout << "You played " << c->getRankAsString() << " of " << c->getSuitAsString() << std::endl;
+		return it->first;
+
+	} else {											// If player has no cards that follow suit or is leading the trick
+		i = 0;
+		for (i = 0; i < hand.size(); i++) {				// Register all cards in hand to the choices map
+			choices.insert(std::pair<int, Card*>(i, hand[i]));
+		}
+	}
+
+	for (std::pair<int, Card*> pair : choices) {		// Print choices
+		std::cout << pair.first << ". " <<
+				pair.second->getRankAsString() << " of " << pair.second->getSuitAsString() << std::endl;
+	}
 
 	do {
-		if (!s.empty())
+		if (!in.empty())									// If not first iteration of loop
 			std::cout << "That's not a valid card!\n";
 
-		std::cout << "Which card do you want to play? [1-" << hand.size() << "]: ";
-		std::cin >> s;
-		i = s[0] - '0';
-	} while (i > static_cast<int>(hand.size()) || i <= 0);
+		std::cout << "Choose a card to play: ";
+		std::cin >> in;
+		i = in[0] - '0';									// Convert first character to integer
+		it = choices.find(i);
+	} while (it == choices.end());						// While choices map doesn't contain the key
 
-	return i - 1;
+	return it->first;
 }
-int Player::decidePlayCard() {
-	return promptPlayCard();
+int Player::decidePlayCard(int suit) {
+	return promptPlayCard(suit);
 }
 
 int Player::promptDiscard() {
@@ -133,6 +165,10 @@ std::string Player::getName() {
 // Clears the player's hand
 void Player::clearHand() {
 	hand.clear();
+}
+
+void Player::resetTricksWon() {
+	tricksWon = 0;
 }
 
 /** Pass a pointer to the player. If the hand isn't full, the pointer will be added to the hand vector
@@ -182,14 +218,14 @@ bool Player::goingAlone() {
  * Asks player to play a card
  * User or AI decides which card to play. That card is then removed from the hand and returned
  */
-Card *Player::playCard() {
+Card *Player::playCard(int suit) {
 	int i;
 	if (hand.size() == 1)
 		i = 0;
 	else if (human)
-		i = promptPlayCard();
+		i = promptPlayCard(suit);
 	else
-		i = decidePlayCard();
+		i = decidePlayCard(suit);
 
 	lastPlayed = hand[i];
 	hand.erase(hand.begin() + i);
@@ -210,12 +246,28 @@ Card *Player::discard() {
 	else
 		i = decideDiscard();
 
-	Card* ret;
+	Card* ret = hand[i];
 	hand.erase(hand.begin() + i);
 
 	return ret;
 }
 
+/**
+ * Returns a pointer to the last played card by the player
+ * Clears that pointer internally to prevent the card from being duplicated
+ */
+Card *Player::takeLastPlayed() {
+	Card *ret = lastPlayed;
+	lastPlayed = 0;
+	return ret;
+}
+
+// Increments the player's tricksWon value
 void Player::winTrick() {
 	tricksWon++;
+}
+
+// Gets the player's tricksWon value
+int Player::getTricksWon() {
+	return tricksWon;
 }

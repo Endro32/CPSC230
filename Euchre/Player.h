@@ -29,8 +29,8 @@ class Player {
 		bool promptGoAlone();		// User decides to go alone or not
 		bool decideGoAlone();		// AI decides to go alone or not
 
-		int promptPlayCard();		// User decides which card to play
-		int decidePlayCard();		// AI decides which card to play
+		int promptPlayCard(int);	// User decides which card to play
+		int decidePlayCard(int);	// AI decides which card to play
 
 		int promptDiscard();		// User decides which card to discard
 		int decideDiscard();		// AI decides which card to discard
@@ -52,9 +52,11 @@ class Player {
 		bool wantPickUp();			// Ask if player wants dealer to pick it up
 		int nameTrump();			// Ask user to name trump or pass (return of -1)
 		bool goingAlone();			// Ask if player wants to go alone
-		Card *playCard();			// Ask user to play a card and returns a pointer to that card
+		Card *playCard(int);		// Ask user to play a card and returns a pointer to that card
 		Card *discard();			// Ask user to discard one of their cards
+		Card *takeLastPlayed();		// Ask player to give up last played card
 		void winTrick();			// Increments tricksWon
+		int getTricksWon();			// Gets number of tricks won by the player
 };
 
 #endif /* PLAYER_H_ */
