@@ -220,12 +220,14 @@ bool Player::goingAlone() {
  */
 Card *Player::playCard(int suit) {
 	int i;
-	if (hand.size() == 1)
+	if (hand.size() == 1) {
 		i = 0;
-	else if (human)
+		std::cout << name << " played " << hand[0]->getRankAsString() << " of " << hand[0]->getSuitAsString() << std::endl;
+	} else if (human) {
 		i = promptPlayCard(suit);
-	else
+	} else {
 		i = decidePlayCard(suit);
+	}
 
 	lastPlayed = hand[i];
 	hand.erase(hand.begin() + i);
@@ -239,9 +241,8 @@ Card *Player::playCard(int suit) {
  */
 Card *Player::discard() {
 	int i;
-	if (hand.size() == 1) {								// If it is the last trick
+	if (hand.size() == 1) {			// If there is only one card left, which shouldn't ever happen
 		i = 0;
-		std::cout << name << " played " << hand[0]->getRankAsString() << " of " << hand[0]->getSuitAsString() << std::endl;
 	} else if (human) {
 		i = promptDiscard();
 	} else {
