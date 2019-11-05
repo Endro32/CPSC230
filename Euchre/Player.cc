@@ -85,11 +85,17 @@ int Player::promptPlayCard(int suit) {
 	unsigned i;
 	std::string in;
 
+	if (hand.size() == 1) {								// If it is the last trick
+		c = hand[0];
+		std::cout << "You played " << c->getRankAsString() << " of " << c->getSuitAsString() << std::endl;
+		return 0;
+	}
+
 	if (suit >= 0) {									// If the player is not leading the trick
 		for (i = 0; i < hand.size(); i++) {				// For every card in the player's hand
 			c = hand[i];
 			if (c->getSuit() == suit) {					// Register index and pointer to map if it follows suit
-				choices.insert(std::pair<int, Card*>(i, c));
+				choices.insert(std::pair<int, Card*>(i + 1, c));
 			}
 		}
 	}
@@ -98,12 +104,12 @@ int Player::promptPlayCard(int suit) {
 		it = choices.begin();							// Automatically play the only available card
 		c = it->second;
 		std::cout << "You played " << c->getRankAsString() << " of " << c->getSuitAsString() << std::endl;
-		return it->first;
+		return it->first - 1;
 
-	} else {											// If player has no cards that follow suit or is leading the trick
+	} else if (choices.size() == 0) {					// If player has no cards that follow suit or is leading the trick
 		i = 0;
 		for (i = 0; i < hand.size(); i++) {				// Register all cards in hand to the choices map
-			choices.insert(std::pair<int, Card*>(i, hand[i]));
+			choices.insert(std::pair<int, Card*>(i + 1, hand[i]));
 		}
 	}
 
@@ -116,13 +122,13 @@ int Player::promptPlayCard(int suit) {
 		if (!in.empty())									// If not first iteration of loop
 			std::cout << "That's not a valid card!\n";
 
-		std::cout << "Choose a card to play: ";
+		std::cout << name << ", choose a card to play: ";
 		std::cin >> in;
 		i = in[0] - '0';									// Convert first character to integer
 		it = choices.find(i);
-	} while (it == choices.end());						// While choices map doesn't contain the key
+	} while (it == choices.end());							// While choices map doesn't contain the key
 
-	return it->first;
+	return it->first - 1;									// Return key - 1 (as array index)
 }
 int Player::decidePlayCard(int suit) {
 	return promptPlayCard(suit);
@@ -131,19 +137,19 @@ int Player::decidePlayCard(int suit) {
 int Player::promptDiscard() {
 	printHand();
 
-		std::string s;
-		int i;
+	std::string s;
+	int i;
 
-		do {
-			if (!s.empty())
-				std::cout << "That's not a valid card!\n";
+	do {
+		if (!s.empty())
+			std::cout << "That's not a valid card!\n";
 
-			std::cout << "Which card would you like to discard? [1-" << hand.size() << "]: ";
-			std::cin >> s;
-			i = s[0] - '0';
-		} while (i > static_cast<int>(hand.size()) || i <= 0);
+		std::cout << "Which card would you like to discard? [1-" << hand.size() << "]: ";
+		std::cin >> s;
+		i = s[0] - '0';
+	} while (i > static_cast<int>(hand.size()) || i <= 0);
 
-		return i - 1;
+	return i - 1;
 }
 int Player::decideDiscard() {
 	return promptDiscard();

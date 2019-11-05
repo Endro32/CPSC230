@@ -34,6 +34,7 @@ public:
 	int getSuit();
 	static std::string getSuitSymbol(int suit);
 	std::string getSuitSymbol();
+	static std::string getSuitAsString(int suit);
 	std::string getSuitAsString();
 	int getRank();
 	std::string getRankAsString();

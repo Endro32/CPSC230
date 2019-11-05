@@ -43,6 +43,7 @@ int main() {
     }*/
 
     Game game;
+    game.play();
 
 	// render();
     return 0;

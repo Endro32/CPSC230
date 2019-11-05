@@ -20,6 +20,8 @@ class Game {
 public:
 	Game();
 	virtual ~Game();
+
+	void play();
 private:
 	// Variables
 	Deck *deck;
@@ -37,14 +39,15 @@ private:
 	int player02Score;
 	int player13Score;
 
-	// Internal functions
+	// Game functions
+	void dealHand();
+	void playHand();
+	void playTrick();
+
+	// Utility functions
 	Player* getPlayer(int);				// Because I'm really lazy; gets player by index
 	Player* getPartner(int);
 	int getPartnerIndex(int);
-
-	void dealHand();
-	void playTrick();
-	void playHand();
 };
 
 #endif /* GAME_H_ */

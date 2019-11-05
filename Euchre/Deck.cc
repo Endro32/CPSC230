@@ -61,16 +61,23 @@ std::string Card::getSuitSymbol() {
 }
 
 /**
- * Returns the name of this card's suit as a string
+ * Returns the name of a suit as a string
  */
-std::string Card::getSuitAsString() {
-	switch (suit) {
+std::string Card::getSuitAsString(int s) {
+	switch (s) {
 	case Card::SPADES:		return "Spades";
 	case Card::HEARTS:		return "Hearts";
 	case Card::DIAMONDS:	return "Diamonds";
 	case Card::CLUBS:		return "Clubs";
 	default:				return "Fail";
 	}
+}
+
+/**
+ * Returns the name of this card's suit as a string
+ */
+std::string Card::getSuitAsString() {
+	return getSuitAsString(suit);
 }
 
 int Card::getRank() {
@@ -170,9 +177,11 @@ Deck::~Deck() {
 
 void Deck::shuffle() {
 	srand((unsigned) time(0)); 					// Set the random seed
-	for (int i = 0; i <= 24; i++) {				// For each card in the deck
+	for (int i = 0; i < 24; i++) {				// For each card in the deck
 		int random = (rand() % 24);				// Get next random number
-		std::swap(cards[i], cards[random]);
+		Card *temp = cards[i];
+		cards[i] = cards[random];
+		cards[random] = temp;
 	}
 
 	cardsUsed = 0;								// Deck is now full again
