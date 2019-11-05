@@ -85,12 +85,6 @@ int Player::promptPlayCard(int suit) {
 	unsigned i;
 	std::string in;
 
-	if (hand.size() == 1) {								// If it is the last trick
-		c = hand[0];
-		std::cout << "You played " << c->getRankAsString() << " of " << c->getSuitAsString() << std::endl;
-		return 0;
-	}
-
 	if (suit >= 0) {									// If the player is not leading the trick
 		for (i = 0; i < hand.size(); i++) {				// For every card in the player's hand
 			c = hand[i];
@@ -245,12 +239,14 @@ Card *Player::playCard(int suit) {
  */
 Card *Player::discard() {
 	int i;
-	if (hand.size() == 1)
+	if (hand.size() == 1) {								// If it is the last trick
 		i = 0;
-	else if (human)
+		std::cout << name << " played " << hand[0]->getRankAsString() << " of " << hand[0]->getSuitAsString() << std::endl;
+	} else if (human) {
 		i = promptDiscard();
-	else
+	} else {
 		i = decideDiscard();
+	}
 
 	Card* ret = hand[i];
 	hand.erase(hand.begin() + i);

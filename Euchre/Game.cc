@@ -191,7 +191,7 @@ void Game::playTrick() {
 	}										// Now all four players have played their cards, and we know who won the trick
 
 	getPlayer(winner)->winTrick();
-	std::cout << getPlayer(winner)->getName() << " won the trick\n";
+	std::cout << getPlayer(winner)->getName() << " won the trick\n\n";
 	leader = winner;
 }
 
