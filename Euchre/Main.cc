@@ -45,6 +45,8 @@ int main() {
     Game game;
     game.play();
 
+    system("pause");
+
 	// render();
     return 0;
 }

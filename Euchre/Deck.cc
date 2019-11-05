@@ -117,7 +117,7 @@ int Card::getStrength(int trump, int curSuit) {
 		}
 	}
 
-	int leftBower;				// Determine which suite the left bower is in
+	int leftBower = -1;				// Determine which suite the left bower is in
 	switch (trump) {
 	case SPADES:
 		leftBower = CLUBS;
