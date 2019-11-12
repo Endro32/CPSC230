@@ -64,7 +64,7 @@ int main()
 // Rounded to one decimal place
 double mean(int sum, int elements) {
 	if (sum < 0 || elements < 0) {						// Exit if parameters are incorrect
-		cerr << "An internal error has occured\n";
+		cerr << "An internal error has occurred\n";
 		exit(1);
 	}
 
