@@ -1,0 +1,6 @@
+Name                    Grade     Comment
+SMITH                   93        Above average
+JOHNSON                 52        Below average
+WILLIAMS                59        Below average
+JONES                   71        Below average
+BROWN                   98        Above average
