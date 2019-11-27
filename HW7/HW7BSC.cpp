@@ -27,7 +27,7 @@ int search(int array[], int x, unsigned l, unsigned r);
 
 const int MAX = 20;
 
-int main()
+int mainb()
 {	// Variables
 	int original[MAX];
 	int sorted[MAX];

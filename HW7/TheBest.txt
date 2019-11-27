@@ -1,0 +1,6 @@
+Title                                                           Income          Comment
+Titanic                                                         600788188       Above average
+Star Wars                                                       460998007       Below average
+E.T. The Extra-Terrestrial                                      434949459       Below average
+Star Wars: Episode I - The Phantom Menace                       431088295       Below average
+Spider-Man                                                      403706375       Below average
